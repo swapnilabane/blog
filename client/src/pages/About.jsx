@@ -1,4 +1,10 @@
+import SinglePage from './SinglePage';
+
 const About = () => {
-  return <div>About</div>;
+  return (
+    <div>
+      <SinglePage />
+    </div>
+  );
 };
 export default About;

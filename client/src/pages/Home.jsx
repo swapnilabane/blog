@@ -4,20 +4,33 @@ import Posts from '../components/Posts';
 const Home = () => {
   return (
     <div className='relative md:mx-36'>
-      <img src='laptop1.jpg' alt='laptop' className='w-full h-[38rem]' />
-      <div className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center text-white'>
-        <h1 className='text-4xl md:text-6xl font-bold mb-4'>
-          Discover, Learn, and Share Amazing Stories
-        </h1>
-        <h3 className='text-lg md:text-xl'>
-          Dive into a collection of thought-provoking articles, compelling
-          stories, and expert perspectives. Unleash your curiosity and discover
-          a wealth of knowledge waiting to be explored.
-        </h3>
+      <div className='relative'>
+        <img src='laptop1.jpg' alt='laptop' className='w-full h-[38rem]' />
+        <div className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center text-white w-full'>
+          <div className='flex flex-col items-center'>
+            <h1 className='text-4xl md:text-6xl font-bold mb-4'>
+              Discover, Learn, and Share <br />
+              Amazing Stories
+            </h1>
+            <h3 className='text-lg md:text-xl'>
+              Dive into a collection of thought-provoking articles, compelling
+              stories, and expert perspectives. <br />
+              Unleash your curiosity and discover a wealth of knowledge waiting
+              to be explored.
+            </h3>
+          </div>
+        </div>
       </div>
-      <Posts />
-      <Categories />
+      <div className='flex w-full mt-8'>
+        <div className='w-2/3 pr-4'>
+          <Posts />
+        </div>
+        <div className='w-1/3'>
+          <Categories />
+        </div>
+      </div>
     </div>
   );
 };
+
 export default Home;
