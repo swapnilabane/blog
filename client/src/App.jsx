@@ -6,8 +6,11 @@ import SignUp from './pages/SignUp';
 import Write from './pages/Write';
 import Header from './components/Header';
 import Footers from './components/Footers';
+import Profile from './pages/Profile';
+import SinglePage from './pages/SinglePage';
 
 function App() {
+  const user = false;
   return (
     <BrowserRouter>
       <div className='flex flex-col min-h-screen'>
@@ -16,9 +19,14 @@ function App() {
           <Routes>
             <Route path='/' element={<Home />} />
             <Route path='/about' element={<About />} />
-            <Route path='/sign-in' element={<SignIn />} />
-            <Route path='/sign-up' element={<SignUp />} />
-            <Route path='/write' element={<Write />} />
+            <Route path='/sign-up' element={user ? <Home /> : <SignUp />} />
+            <Route path='/sign-in' element={user ? <Home /> : <SignIn />} />
+            <Route path='/write' element={user ? <Write /> : <SignUp />} />
+            <Route path='/post/:id' element={<SinglePage />} />
+            <Route
+              path='/profile'
+              element={user ? <Profile /> : <SignUp />}
+            ></Route>
           </Routes>
         </main>
         <Footers />

@@ -2,9 +2,13 @@ import { AiFillFileAdd } from 'react-icons/ai';
 
 const Write = () => {
   return (
-    <div className='main flex flex-col items-center h-screen mt-20'>
+    <div className='main flex flex-col items-center h-screen mt-10'>
       <div className='image'>
-        <img src='laptop.jpg' alt='Laptop' className='w-80 h-44 rounded-lg' />
+        <img
+          src='laptop.jpg'
+          alt='Laptop'
+          className='w-[45rem] h-[15rem] rounded-lg'
+        />
       </div>
       <form className='mt-8'>
         <div className='flex items-center space-x-8'>
