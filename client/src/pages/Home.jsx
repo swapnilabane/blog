@@ -1,7 +1,25 @@
+import { useEffect, useState } from 'react';
 import Categories from '../components/Categories';
 import Posts from '../components/Posts';
+import axios from 'axios';
+import { useLocation } from 'react-router-dom';
 
 const Home = () => {
+  const [post, setPost] = useState([]);
+  const { search } = useLocation();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await axios.get('/api/v1/post' + search);
+        setPost(res.data);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+    fetchData();
+  }, [search]);
+
   return (
     <div className='relative md:mx-36'>
       <div className='relative'>
@@ -23,7 +41,7 @@ const Home = () => {
       </div>
       <div className='flex w-full mt-8'>
         <div className='w-2/3 pr-4'>
-          <Posts />
+          <Posts post={post} />
         </div>
         <div className='w-1/3'>
           <Categories />
