@@ -32,6 +32,7 @@ const loginUser = async (req, res) => {
           username: user.username,
           email: user.email,
           mobile: user.mobile,
+          profilePic: user.profilePic,
         });
       } else {
         res.status(401).json({ message: 'Authentication failed' });

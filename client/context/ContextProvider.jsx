@@ -1,4 +1,3 @@
-// ContextProvider.js
 import { createContext, useReducer } from 'react';
 import Reducer from './Reducer';
 
@@ -39,6 +38,10 @@ export const ContextProvider = ({ children }) => {
     }
   };
 
+  const logout = () => {
+    dispatchWithLocalStorageUpdate({ type: 'LOGOUT' });
+  };
+
   return (
     <Context.Provider
       value={{
@@ -46,6 +49,7 @@ export const ContextProvider = ({ children }) => {
         isFetching: state.isFetching,
         error: state.error,
         dispatch: dispatchWithLocalStorageUpdate,
+        logout: logout,
       }}
     >
       {children}

@@ -23,13 +23,15 @@ const IndividualPosts = () => {
   }, [username]);
 
   return (
-    <div className='container mx-auto py-8'>
-      <h2 className='text-3xl font-semibold mb-6'>
+    <div className='container mx-auto md:mx-36 py-8'>
+      <h2 className='text-3xl font-semibold mb-6 text-center'>
         Posts by {username || 'User'}
       </h2>
-      <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
+      <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mx-auto'>
         {posts.map((post) => (
-          <PostCard key={post._id} items={post} />
+          <div key={post._id} className='mx-auto'>
+            <PostCard items={post} />
+          </div>
         ))}
       </div>
     </div>

@@ -10,6 +10,8 @@ const Header = () => {
 
   const { dispatch, user } = useContext(Context);
 
+  const publicFolder = 'http://localhost:3000/images/';
+
   const handleLogout = async () => {
     dispatch({ type: 'LOGOUT' });
 
@@ -19,6 +21,8 @@ const Header = () => {
 
     navigate('/');
   };
+
+  // console.log(user);
 
   return (
     <Navbar className='border-b-2 md:mx-36'>
@@ -33,11 +37,13 @@ const Header = () => {
       <div className='flex gap-5 md:order-2'>
         {user ? (
           <Link to='/profile'>
-            <img
-              src='avtar1.jpg'
-              alt='avatar'
-              className='w-10 h-10 rounded-full'
-            />
+            {user && user.profilePic && (
+              <img
+                src={publicFolder + user.profilePic}
+                alt='logo'
+                className='w-10 h-10 rounded-full'
+              />
+            )}
           </Link>
         ) : (
           <>

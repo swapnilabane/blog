@@ -25,7 +25,7 @@ const IndividualCategories = () => {
   }, [categoryName]);
 
   return (
-    <div className='container mx-auto py-8'>
+    <div className='container mx-auto md:mx-36 py-8'>
       <h2 className='text-3xl font-semibold mb-6'>
         Posts Related To {categoryName || 'Category'}
       </h2>
