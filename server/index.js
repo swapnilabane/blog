@@ -6,21 +6,24 @@ import { authRoute } from './routes/authRoutes.js';
 import { userRoute } from './routes/userRoutes.js';
 import { postRoute } from './routes/postRoutes.js';
 import { categoryRoute } from './routes/categoryRoutes.js';
-import multer from 'multer';
-import path from 'path';
-import { fileURLToPath } from 'url';
 import cors from 'cors';
+import { signatureRouter } from './routes/signatureRoutes.js';
 
 const app = express();
-app.use(cors());
-app.use(express.json());
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-app.use('/images', express.static(path.join(__dirname, '/images')));
-
-const port = process.env.PORT || '8000';
+const port = process.env.PORT || 8000;
 const mongoURL = process.env.MONGO_URL;
+
+app.use(
+  cors({
+    origin: [
+      'http://localhost:5173',
+      'https://frolicking-blini-2310c6.netlify.app',
+    ],
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    credentials: true,
+  })
+);
+app.use(express.json());
 
 const connectDB = async () => {
   try {
@@ -32,27 +35,16 @@ const connectDB = async () => {
   }
 };
 
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, 'images');
-  },
-  filename: (req, file, cb) => {
-    cb(null, req.body.name);
-  },
-});
-
-const upload = multer({ storage: storage });
-app.post('/api/upload', upload.single('file'), (req, res) => {
-  res.status(200).json('File has been uploaded');
-});
-
 app.use('/api/v1/auth', authRoute);
 app.use('/api/v1/user', userRoute);
 app.use('/api/v1/post', postRoute);
 app.use('/api/v1/categories', categoryRoute);
+app.use('/api/sign-upload', signatureRouter);
 
 connectDB().then(() => {
   app.listen(port, () => {
-    console.log(`listening for requests http://localhost:${port}`);
+    console.log(
+      `Listening for requests at https://mern-blog-server-hq7r.onrender.com`
+    );
   });
 });

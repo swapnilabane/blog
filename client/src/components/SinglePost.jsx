@@ -10,7 +10,6 @@ const SinglePost = () => {
   const path = location.pathname.split('/')[2];
   const [post, setPost] = useState({});
   const [updateMode, setUpdateMode] = useState(false);
-  const publicFolder = 'http://localhost:3000/images/';
   const { user } = useContext(Context);
   const navigate = useNavigate();
   const [title, setTitle] = useState('');
@@ -21,7 +20,10 @@ const SinglePost = () => {
   useEffect(() => {
     const getPost = async () => {
       try {
-        const res = await axios.get('/api/v1/post/' + path);
+        const res = await axios.get(
+          'https://mern-blog-server-hq7r.onrender.com/api/v1/post/' + path
+        );
+        // console.log(res.data);
         setPost(res.data);
         setTitle(res.data.title);
         setDescription(res.data.description);
@@ -34,9 +36,12 @@ const SinglePost = () => {
 
   const handleDelete = async () => {
     try {
-      await axios.delete(`/api/v1/post/delete/${post._id}`, {
-        data: { username: user.username },
-      });
+      await axios.delete(
+        `https://mern-blog-server-hq7r.onrender.com/api/v1/post/delete/${post._id}`,
+        {
+          data: { username: user.username },
+        }
+      );
       navigate('/');
     } catch (err) {
       console.log(err);
@@ -45,11 +50,14 @@ const SinglePost = () => {
 
   const handleUpdate = async () => {
     try {
-      await axios.put(`/api/v1/post/update/${post._id}`, {
-        username: user.username,
-        title,
-        description,
-      });
+      await axios.put(
+        `https://mern-blog-server-hq7r.onrender.com/api/v1/post/update/${post._id}`,
+        {
+          username: user.username,
+          title,
+          description,
+        }
+      );
       setUpdateMode(false);
       window.location.reload();
     } catch (err) {
@@ -62,7 +70,7 @@ const SinglePost = () => {
       <div className='card space-y-5 mt-2 h-screen flex-col '>
         <div className='image'>
           <img
-            src={publicFolder + post.photo}
+            src={post.photo}
             alt='img'
             className='w-full h-64 object-cover'
           />

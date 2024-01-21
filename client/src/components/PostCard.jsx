@@ -8,7 +8,6 @@ function capitalizeFirstLetter(string) {
 
 function PostCard({ items }) {
   const [isExpanded, setIsExpanded] = useState(false);
-  const publicFolder = 'http://localhost:3000/images/';
 
   const toggleDescription = () => {
     setIsExpanded(!isExpanded);
@@ -30,7 +29,7 @@ function PostCard({ items }) {
     <Card
       className='max-w-sm h-full'
       imgAlt='Meaningful alt text for an image that is not purely decorative'
-      imgSrc={publicFolder + items.photo}
+      imgSrc={items.photo}
     >
       <div className='p-6 h-full flex flex-col justify-between'>
         <div>

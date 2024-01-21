@@ -3,41 +3,91 @@ import { AiFillFileAdd } from 'react-icons/ai';
 import { useNavigate } from 'react-router-dom';
 import { Context } from '../../context/ContextProvider';
 import axios from 'axios';
+import { ThreeDots } from 'react-loader-spinner';
 
 const Write = () => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [file, setFile] = useState(null);
+  const [loading, setLoading] = useState(false);
   const { user } = useContext(Context);
   const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const uploadFile = async (timestamp, signature) => {
+    const data = new FormData();
+    data.append('file', file);
 
-    const newPost = {
-      username: user.username,
-      title,
-      description,
-    };
-
-    if (file) {
-      const data = new FormData();
-      const filename = Date.now() + file.name;
-      data.append('name', filename);
-      data.append('file', file);
-      newPost.photo = filename;
-      try {
-        await axios.post('/api/upload', data);
-      } catch (err) {
-        console.log(err);
-      }
-    }
+    // Add other required parameters
+    data.append('timestamp', timestamp);
+    data.append('signature', signature);
+    data.append('api_key', '684836839274529');
+    data.append('upload_preset', 'images_preset');
+    data.append('folder', 'images');
 
     try {
-      const res = await axios.post('/api/v1/post/create', newPost);
-      res.data && navigate(`/post/${res.data._id}`);
+      let api = 'https://api.cloudinary.com/v1_1/dn1d2qvqd/image/upload';
+
+      // console.log('Cloudinary API URL:', api);
+      // console.log('Cloudinary API Data:', data);
+
+      const res = await axios.post(api, data);
+      const { secure_url } = res.data;
+      // console.log('File upload success:', secure_url);
+      return secure_url;
     } catch (error) {
-      console.log(error);
+      // console.error('File upload error:', error);
+    }
+  };
+
+  const getSignatureForUpload = async (folder) => {
+    try {
+      const res = await axios.post(
+        'https://mern-blog-server-hq7r.onrender.com/api/sign-upload',
+        { folder }
+      );
+      // console.log('Signature response:', res.data);
+
+      if ('timestamp' in res.data && 'signature' in res.data) {
+        return res.data;
+      } else {
+        throw new Error('Invalid response format');
+      }
+    } catch (error) {
+      console.error('Signature request error:', error);
+    }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    // console.log('File state:', file);
+
+    try {
+      setLoading(true);
+
+      const { timestamp, signature } = await getSignatureForUpload('images');
+
+      const imgUrl = await uploadFile(timestamp, signature);
+
+      const newPost = {
+        username: user.username,
+        title,
+        description,
+        image: imgUrl,
+      };
+
+      const res = await axios.post(
+        'https://mern-blog-server-hq7r.onrender.com/api/v1/post/create',
+        newPost
+      );
+
+      res.data && navigate(`/post/${res.data._id}`);
+      setFile(null); // Reset the file state after successful upload
+
+      // console.log('Post creation success!');
+      setLoading(false);
+    } catch (error) {
+      console.error('Post creation error:', error);
+      setLoading(false);
     }
   };
 
@@ -103,6 +153,19 @@ const Write = () => {
           Publish Post
         </button>
       </form>
+
+      {loading && (
+        <ThreeDots
+          height='80'
+          width='80'
+          radius='9'
+          color='#4fa94d'
+          ariaLabel='three-dots-loading'
+          wrapperStyle={{}}
+          wrapperClassName=''
+          visible={true}
+        />
+      )}
     </div>
   ) : null;
 };

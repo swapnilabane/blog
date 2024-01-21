@@ -1,4 +1,3 @@
-// Header.js
 import { Button, Navbar } from 'flowbite-react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useContext } from 'react';
@@ -10,7 +9,7 @@ const Header = () => {
 
   const { dispatch, user } = useContext(Context);
 
-  const publicFolder = 'http://localhost:3000/images/';
+  // console.log(user);
 
   const handleLogout = async () => {
     dispatch({ type: 'LOGOUT' });
@@ -21,8 +20,6 @@ const Header = () => {
 
     navigate('/');
   };
-
-  // console.log(user);
 
   return (
     <Navbar className='border-b-2 md:mx-36'>
@@ -37,12 +34,14 @@ const Header = () => {
       <div className='flex gap-5 md:order-2'>
         {user ? (
           <Link to='/profile'>
-            {user && user.profilePic && (
+            {user.profilePic ? (
               <img
-                src={publicFolder + user.profilePic}
-                alt='logo'
+                src={user.profilePic}
+                alt='profile'
                 className='w-10 h-10 rounded-full'
               />
+            ) : (
+              <div className='w-10 h-10 rounded-full bg-gray-300'></div>
             )}
           </Link>
         ) : (
